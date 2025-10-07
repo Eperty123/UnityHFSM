@@ -367,8 +367,8 @@ namespace UnityHFSM
 			{
 				TransitionBase<TStateId> transition = transitionsFromAny[i];
 
-				// Don't transition to the "to" state, if that state is already the active state.
-				if (EqualityComparer<TStateId>.Default.Equals(transition.to, activeState.name))
+				// Don't transition to the "to" state, if that state is already the active state, or if re-entry is not allowed.
+				if (!transition.allowReentry && EqualityComparer<TStateId>.Default.Equals(transition.to, activeState.name))
 					continue;
 
 				if (TryTransition(transition))
@@ -713,7 +713,7 @@ namespace UnityHFSM
 				{
 					TransitionBase<TStateId> transition = triggerTransitions[i];
 
-					if (EqualityComparer<TStateId>.Default.Equals(transition.to, activeState.name))
+					if (!transition.allowReentry && EqualityComparer<TStateId>.Default.Equals(transition.to, activeState.name))
 						continue;
 
 					if (TryTransition(transition))

@@ -11,6 +11,7 @@ namespace UnityHFSM
 
 		public readonly bool forceInstantly;
 		public bool isExitTransition;
+		public readonly bool allowReentry;
 
 		public IStateMachine<TStateId> fsm;
 
@@ -21,12 +22,14 @@ namespace UnityHFSM
 		/// <param name="to">The name / identifier of the next state.</param>
 		/// <param name="forceInstantly">Ignores the <c>needsExitTime</c> of the active state
 		///     if <c>forceInstantly</c> is true. => Forces an instant transition</param>
-		public TransitionBase(TStateId from, TStateId to, bool forceInstantly = false)
+		///     <param name="allowReentry">Allow reentry to this state. If true, the check for already in-state is skipped</param>
+		public TransitionBase(TStateId from, TStateId to, bool forceInstantly = false, bool allowReentry = false)
 		{
 			this.from = from;
 			this.to = to;
 			this.forceInstantly = forceInstantly;
 			this.isExitTransition = false;
+			this.allowReentry = allowReentry;
 		}
 
 		/// <summary>
@@ -75,7 +78,7 @@ namespace UnityHFSM
 	public class TransitionBase : TransitionBase<string>
 	{
 		/// <inheritdoc />
-		public TransitionBase(string @from, string to, bool forceInstantly = false) : base(@from, to, forceInstantly)
+		public TransitionBase(string @from, string to, bool forceInstantly = false, bool allowReentry = false) : base(@from, to, forceInstantly, allowReentry)
 		{
 		}
 	}

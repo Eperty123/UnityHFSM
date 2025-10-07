@@ -64,10 +64,11 @@ namespace UnityHFSM
 			Func<Transition<TStateId>, bool> condition = null,
 			Action<Transition<TStateId>> onTransition = null,
 			Action<Transition<TStateId>> afterTransition = null,
-			bool forceInstantly = false)
+			bool forceInstantly = false,
+			bool allowReentry = false)
 		{
 			if (condition == null && onTransition == null && afterTransition == null)
-				return new TransitionBase<TStateId>(from, to, forceInstantly);
+				return new TransitionBase<TStateId>(from, to, forceInstantly, allowReentry);
 
 			return new Transition<TStateId>(
 				from,
@@ -75,7 +76,8 @@ namespace UnityHFSM
 				condition,
 				onTransition: onTransition,
 				afterTransition: afterTransition,
-				forceInstantly: forceInstantly
+				forceInstantly: forceInstantly,
+				allowReentry: allowReentry
 			);
 		}
 
@@ -88,7 +90,7 @@ namespace UnityHFSM
 		/// for optimal performance, otherwise a <see cref="Transition"/> object.
 		/// </remarks>
 		/// <inheritdoc cref="Transition{TStateId}(TStateId, TStateId, Func{Transition{TStateId}, bool},
-		/// 	Action{Transition{TStateId}}, Action{Transition{TStateId}}, bool)" />
+		/// 	Action{Transition{TStateId}}, Action{Transition{TStateId}}, bool, bool)" />
 		public static void AddTransition<TOwnId, TStateId, TEvent>(
 			this StateMachine<TOwnId, TStateId, TEvent> fsm,
 			TStateId from,
@@ -96,7 +98,8 @@ namespace UnityHFSM
 			Func<Transition<TStateId>, bool> condition = null,
 			Action<Transition<TStateId>> onTransition = null,
 			Action<Transition<TStateId>> afterTransition = null,
-			bool forceInstantly = false)
+			bool forceInstantly = false,
+			bool allowReentry = false)
 		{
 			fsm.AddTransition(CreateOptimizedTransition(
 				from,
@@ -104,7 +107,8 @@ namespace UnityHFSM
 				condition,
 				onTransition: onTransition,
 				afterTransition: afterTransition,
-				forceInstantly: forceInstantly
+				forceInstantly: forceInstantly,
+				allowReentry: allowReentry
 			));
 		}
 
@@ -117,14 +121,15 @@ namespace UnityHFSM
 		/// for optimal performance, otherwise a <see cref="Transition"/> object.
 		/// </remarks>
 		/// <inheritdoc cref="Transition{TStateId}(TStateId, TStateId, Func{Transition{TStateId}, bool},
-		/// 	Action{Transition{TStateId}}, Action{Transition{TStateId}}, bool)" />
+		/// 	Action{Transition{TStateId}}, Action{Transition{TStateId}}, bool, bool)" />
 		public static void AddTransitionFromAny<TOwnId, TStateId, TEvent>(
 			this StateMachine<TOwnId, TStateId, TEvent> fsm,
 			TStateId to,
 			Func<Transition<TStateId>, bool> condition = null,
 			Action<Transition<TStateId>> onTransition = null,
 			Action<Transition<TStateId>> afterTransition = null,
-			bool forceInstantly = false)
+			bool forceInstantly = false,
+			bool allowReentry = false)
 		{
 			fsm.AddTransitionFromAny(CreateOptimizedTransition(
 				default,
@@ -132,7 +137,8 @@ namespace UnityHFSM
 				condition,
 				onTransition: onTransition,
 				afterTransition: afterTransition,
-				forceInstantly: forceInstantly
+				forceInstantly: forceInstantly,
+				allowReentry : allowReentry
 			));
 		}
 
@@ -146,7 +152,7 @@ namespace UnityHFSM
 		/// for optimal performance, otherwise a <see cref="Transition"/> object.
 		/// </remarks>
 		/// <inheritdoc cref="Transition{TStateId}(TStateId, TStateId, Func{Transition{TStateId}, bool},
-		/// 	Action{Transition{TStateId}}, Action{Transition{TStateId}}, bool)" />
+		/// 	Action{Transition{TStateId}}, Action{Transition{TStateId}}, bool, bool)" />
 		public static void AddTriggerTransition<TOwnId, TStateId, TEvent>(
 			this StateMachine<TOwnId, TStateId, TEvent> fsm,
 			TEvent trigger,
@@ -155,7 +161,8 @@ namespace UnityHFSM
 			Func<Transition<TStateId>, bool> condition = null,
 			Action<Transition<TStateId>> onTransition = null,
 			Action<Transition<TStateId>> afterTransition = null,
-			bool forceInstantly = false)
+			bool forceInstantly = false,
+			bool allowReentry = false)
 		{
 			fsm.AddTriggerTransition(trigger, CreateOptimizedTransition(
 				from,
@@ -163,7 +170,8 @@ namespace UnityHFSM
 				condition,
 				onTransition: onTransition,
 				afterTransition: afterTransition,
-				forceInstantly: forceInstantly
+				forceInstantly: forceInstantly,
+				allowReentry: allowReentry
 			));
 		}
 
@@ -177,7 +185,7 @@ namespace UnityHFSM
 		/// for optimal performance, otherwise a <see cref="Transition"/> object.
 		/// </remarks>
 		/// <inheritdoc cref="Transition{TStateId}(TStateId, TStateId, Func{Transition{TStateId}, bool},
-		/// 	Action{Transition{TStateId}}, Action{Transition{TStateId}}, bool)" />
+		/// 	Action{Transition{TStateId}}, Action{Transition{TStateId}}, bool, bool)" />
 		public static void AddTriggerTransitionFromAny<TOwnId, TStateId, TEvent>(
 			this StateMachine<TOwnId, TStateId, TEvent> fsm,
 			TEvent trigger,
@@ -185,7 +193,8 @@ namespace UnityHFSM
 			Func<Transition<TStateId>, bool> condition = null,
 			Action<Transition<TStateId>> onTransition = null,
 			Action<Transition<TStateId>> afterTransition = null,
-			bool forceInstantly = false)
+			bool forceInstantly = false,
+			bool allowReentry = false)
 		{
 			fsm.AddTriggerTransitionFromAny(trigger, CreateOptimizedTransition(
 				default,
@@ -193,7 +202,8 @@ namespace UnityHFSM
 				condition,
 				onTransition: onTransition,
 				afterTransition: afterTransition,
-				forceInstantly: forceInstantly
+				forceInstantly: forceInstantly,
+				allowReentry: allowReentry
 			));
 		}
 
@@ -276,14 +286,15 @@ namespace UnityHFSM
 		/// for optimal performance, otherwise a <see cref="Transition"/> object.
 		/// </remarks>
 		/// <inheritdoc cref="Transition{TStateId}(TStateId, TStateId, Func{Transition{TStateId}, bool},
-		/// 	Action{Transition{TStateId}}, Action{Transition{TStateId}}, bool)" />
+		/// 	Action{Transition{TStateId}}, Action{Transition{TStateId}}, bool, bool)" />
 		public static void AddExitTransition<TOwnId, TStateId, TEvent>(
 			this StateMachine<TOwnId, TStateId, TEvent> fsm,
 			TStateId from,
 			Func<Transition<TStateId>, bool> condition = null,
 			Action<Transition<TStateId>> onTransition = null,
 			Action<Transition<TStateId>> afterTransition = null,
-			bool forceInstantly = false)
+			bool forceInstantly = false,
+            bool allowReentry = false)
 		{
 			fsm.AddExitTransition(CreateOptimizedTransition(
 				from,
@@ -291,7 +302,8 @@ namespace UnityHFSM
 				condition,
 				onTransition: onTransition,
 				afterTransition: afterTransition,
-				forceInstantly: forceInstantly
+				forceInstantly: forceInstantly,
+				allowReentry: allowReentry
 			));
 		}
 
@@ -305,13 +317,14 @@ namespace UnityHFSM
 		/// for optimal performance, otherwise a <see cref="Transition"/> object.
 		/// </remarks>
 		/// <inheritdoc cref="Transition{TStateId}(TStateId, TStateId, Func{Transition{TStateId}, bool},
-		/// 	Action{Transition{TStateId}}, Action{Transition{TStateId}}, bool)" />
+		/// 	Action{Transition{TStateId}}, Action{Transition{TStateId}}, bool, bool)" />
 		public static void AddExitTransitionFromAny<TOwnId, TStateId, TEvent>(
 			this StateMachine<TOwnId, TStateId, TEvent> fsm,
 			Func<Transition<TStateId>, bool> condition = null,
 			Action<Transition<TStateId>> onTransition = null,
 			Action<Transition<TStateId>> afterTransition = null,
-			bool forceInstantly = false)
+			bool forceInstantly = false,
+            bool allowReentry = false)
 		{
 			fsm.AddExitTransitionFromAny(CreateOptimizedTransition(
 				default,
@@ -319,7 +332,8 @@ namespace UnityHFSM
 				condition,
 				onTransition: onTransition,
 				afterTransition: afterTransition,
-				forceInstantly: forceInstantly
+				forceInstantly: forceInstantly,
+				allowReentry: allowReentry
 			));
 		}
 
@@ -334,7 +348,7 @@ namespace UnityHFSM
 		/// for optimal performance, otherwise a <see cref="Transition"/> object.
 		/// </remarks>
 		/// <inheritdoc cref="Transition{TStateId}(TStateId, TStateId, Func{Transition{TStateId}, bool},
-		/// 	Action{Transition{TStateId}}, Action{Transition{TStateId}}, bool)" />
+		/// 	Action{Transition{TStateId}}, Action{Transition{TStateId}}, bool, bool)" />
 		public static void AddExitTriggerTransition<TOwnId, TStateId, TEvent>(
 			this StateMachine<TOwnId, TStateId, TEvent> fsm,
 			TEvent trigger,
@@ -342,7 +356,8 @@ namespace UnityHFSM
 			Func<Transition<TStateId>, bool> condition = null,
 			Action<Transition<TStateId>> onTransition = null,
 			Action<Transition<TStateId>> afterTransition = null,
-			bool forceInstantly = false)
+			bool forceInstantly = false,
+            bool allowReentry = false)
 		{
 			fsm.AddExitTriggerTransition(
 				trigger,
@@ -352,7 +367,8 @@ namespace UnityHFSM
 					condition,
 					onTransition: onTransition,
 					afterTransition: afterTransition,
-					forceInstantly: forceInstantly
+					forceInstantly: forceInstantly,
+					allowReentry: allowReentry
 				)
 			);
 		}
@@ -368,14 +384,15 @@ namespace UnityHFSM
 		/// for optimal performance, otherwise a <see cref="Transition"/> object.
 		/// </remarks>
 		/// <inheritdoc cref="Transition{TStateId}(TStateId, TStateId, Func{Transition{TStateId}, bool},
-		/// 	Action{Transition{TStateId}}, Action{Transition{TStateId}}, bool)" />
+		/// 	Action{Transition{TStateId}}, Action{Transition{TStateId}}, bool, bool)" />
 		public static void AddExitTriggerTransitionFromAny<TOwnId, TStateId, TEvent>(
 			this StateMachine<TOwnId, TStateId, TEvent> fsm,
 			TEvent trigger,
 			Func<Transition<TStateId>, bool> condition = null,
 			Action<Transition<TStateId>> onTransition = null,
 			Action<Transition<TStateId>> afterTransition = null,
-			bool forceInstantly = false)
+			bool forceInstantly = false,
+            bool allowReentry = false)
 		{
 			fsm.AddExitTriggerTransitionFromAny(
 				trigger,
@@ -385,7 +402,9 @@ namespace UnityHFSM
 					condition,
 					onTransition: onTransition,
 					afterTransition: afterTransition,
-					forceInstantly: forceInstantly
+					forceInstantly: forceInstantly,
+					allowReentry: allowReentry
+
 				)
 			);
 		}

@@ -32,7 +32,7 @@ namespace UnityHFSM
 				Func<TransitionAfter<TStateId>, bool> condition = null,
 				Action<TransitionAfter<TStateId>> onTransition = null,
 				Action<TransitionAfter<TStateId>> afterTransition = null,
-				bool forceInstantly = false) : base(from, to, forceInstantly)
+				bool forceInstantly = false, bool allowReentry = false) : base(from, to, forceInstantly, allowReentry)
 		{
 			this.delay = delay;
 			this.condition = condition;

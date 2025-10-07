@@ -37,7 +37,7 @@ namespace UnityHFSM
 				bool onlyEvaluateDelayOnEnter = false,
 				Action<TransitionAfterDynamic<TStateId>> onTransition = null,
 				Action<TransitionAfterDynamic<TStateId>> afterTransition = null,
-				bool forceInstantly = false) : base(from, to, forceInstantly)
+				bool forceInstantly = false, bool allowReentry = false) : base(from, to, forceInstantly, allowReentry)
 		{
 			this.delayCalculator = delay;
 			this.condition = condition;

@@ -20,7 +20,7 @@ namespace UnityHFSM
 					TStateId from,
 					TStateId to,
 					KeyCode key,
-					bool forceInstantly = false) : base(from, to, forceInstantly)
+					bool forceInstantly = false, bool allowReentry = false) : base(from, to, forceInstantly, allowReentry)
 			{
 				keyCode = key;
 			}
@@ -45,7 +45,7 @@ namespace UnityHFSM
 					TStateId from,
 					TStateId to,
 					KeyCode key,
-					bool forceInstantly = false) : base(from, to, forceInstantly)
+					bool forceInstantly = false, bool allowReentry = false) : base(from, to, forceInstantly, allowReentry)
 			{
 				keyCode = key;
 			}
@@ -69,7 +69,7 @@ namespace UnityHFSM
 					TStateId from,
 					TStateId to,
 					KeyCode key,
-					bool forceInstantly = false) : base(from, to, forceInstantly)
+					bool forceInstantly = false, bool allowReentry = false) : base(from, to, forceInstantly, allowReentry)
 			{
 				keyCode = key;
 			}
@@ -93,7 +93,7 @@ namespace UnityHFSM
 					TStateId from,
 					TStateId to,
 					KeyCode key,
-					bool forceInstantly = false) : base(from, to, forceInstantly)
+					bool forceInstantly = false, bool allowReentry = false) : base(from, to, forceInstantly, allowReentry)
 			{
 				keyCode = key;
 			}

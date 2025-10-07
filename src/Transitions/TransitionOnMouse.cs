@@ -20,7 +20,7 @@ namespace UnityHFSM
 					TStateId from,
 					TStateId to,
 					int button,
-					bool forceInstantly = false) : base(from, to, forceInstantly)
+					bool forceInstantly = false, bool allowReentry = false) : base(from, to, forceInstantly, allowReentry)
 			{
 				this.button = button;
 			}
@@ -44,7 +44,7 @@ namespace UnityHFSM
 					TStateId from,
 					TStateId to,
 					int button,
-					bool forceInstantly = false) : base(from, to, forceInstantly)
+					bool forceInstantly = false, bool allowReentry = false) : base(from, to, forceInstantly, allowReentry)
 			{
 				this.button = button;
 			}
@@ -68,7 +68,7 @@ namespace UnityHFSM
 					TStateId from,
 					TStateId to,
 					int button,
-					bool forceInstantly = false) : base(from, to, forceInstantly)
+					bool forceInstantly = false, bool allowReentry = false) : base(from, to, forceInstantly, allowReentry)
 			{
 				this.button = button;
 			}
@@ -92,7 +92,7 @@ namespace UnityHFSM
 					TStateId from,
 					TStateId to,
 					int button,
-					bool forceInstantly = false) : base(from, to, forceInstantly)
+					bool forceInstantly = false, bool allowReentry = false) : base(from, to, forceInstantly, allowReentry)
 			{
 				this.button = button;
 			}
