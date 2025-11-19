@@ -54,13 +54,14 @@ namespace UnityHFSM
 			Func<Transition<string>, bool> condition = null,
 			Action<Transition<string>> onTransition = null,
 			Action<Transition<string>> afterTransition = null,
-			bool forceInstantly = false) : base(
+			bool forceInstantly = false, bool allowReentry = false) : base(
 				@from,
 				to,
 				condition,
 				onTransition: onTransition,
 				afterTransition: afterTransition,
-				forceInstantly: forceInstantly)
+				forceInstantly: forceInstantly,
+				allowReentry: allowReentry)
 		{
 		}
 	}

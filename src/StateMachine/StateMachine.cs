@@ -503,26 +503,28 @@ namespace UnityHFSM
 			return bundle;
 		}
 
-		/// <summary>
-		/// Adds a new node / state to the state machine.
-		/// </summary>
-		/// <param name="name">The name / identifier of the new state.</param>
-		/// <param name="state">The new state instance,
-		///		e.g. <see cref="State"/>, <see cref="CoState"/>, <see cref="StateMachine"/>.</param>
-		public void AddState(TStateId name, StateBase<TStateId> state)
-		{
-			state.fsm = this;
-			state.name = name;
-			state.Init();
+        /// <summary>
+        /// Adds a new node / state to the state machine.
+        /// </summary>
+        /// <param name="name">The name / identifier of the new state.</param>
+        /// <param name="state">The new state instance,
+        ///		e.g. <see cref="State"/>, <see cref="CoState"/>, <see cref="StateMachine"/>.</param>
+        ///	<param name="overwrite">Overwrite the existing state?</param>
+        public void AddState(TStateId name, StateBase<TStateId> state, bool overwrite = false)
+        {
+            state.fsm = this;
+            state.name = name;
+            state.Init();
 
-			StateBundle bundle = GetOrCreateStateBundle(name);
-			bundle.state = state;
+            StateBundle bundle = GetOrCreateStateBundle(name);
+            if (overwrite) bundle = new StateBundle();
+            bundle.state = state;
 
-			if (stateBundlesByName.Count == 1 && !startState.hasState)
-			{
-				SetStartState(name);
-			}
-		}
+            if (stateBundlesByName.Count == 1 && !startState.hasState)
+            {
+                SetStartState(name);
+            }
+        }
 
 		/// <summary>
 		/// Initialises a transition, i.e. sets its <c>fsm</c> attribute, and then calls its <c>Init</c> method.
