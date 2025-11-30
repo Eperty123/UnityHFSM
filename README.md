@@ -962,3 +962,9 @@ If you want to develop new code for UnityHFSM or contribute to the project, you 
 ---
 
 For more documentation check out the [Wiki](https://github.com/Inspiaaa/UnityHFSM/wiki).
+
+# Customized Features
+My fork adds support for re-entry which allows subsequent states to be entered indefinitely through a trigger transition along with some exception silencing (which needs to be handled manually). Example:
+```csharp
+StateMachine.AddTriggerTransitionFromAny(CharacterStateEvent.CombatHurtRequest, CharacterState.CombatHurt, t => CanHurt(), allowReentry: true);
+```
