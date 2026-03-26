@@ -156,12 +156,20 @@ namespace UnityHFSM
         public StateBase<TStateId> PendingState => GetState(PendingStateName);
         public bool HasPendingTransition => pendingTransition.isPending;
 
+		/// <summary>
+		/// Returns true when the state machine is currently running.
+		/// </summary>
+		public bool IsInitialized {
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			get => activeState != null;
+		}
+
         public IStateTimingManager ParentFsm => fsm;
 
         public bool IsRootFsm => fsm == null;
 
         /// <summary>
-        /// Initialises a new instance of the StateMachine class.
+        /// Initializes a new instance of the StateMachine class.
         /// </summary>
         /// <param name="needsExitTime">(Only for hierarchical states):
         /// 	Determines whether the state machine as a state of a parent state machine is allowed to instantly
@@ -176,13 +184,14 @@ namespace UnityHFSM
             this.rememberLastState = rememberLastState;
         }
 
-        /// <summary>
-        /// Throws an exception if the state machine is not initialised yet.
-        /// </summary>
-        /// <param name="context">String message for which action the fsm should be initialised for.</param>
+		/// <summary>
+		/// Throws an exception if the state machine is not initialized yet.
+		/// </summary>
+		/// <param name="context">String message for which action the fsm should be initialized for.</param>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void EnsureIsInitializedFor(string context)
         {
-            if (activeState == null)
+            if (!IsInitialized)
                 throw UnityHFSM.Exceptions.Common.NotInitialized(this, context);
         }
 
@@ -406,7 +415,7 @@ namespace UnityHFSM
         }
 
         /// <summary>
-        /// Initialises the state machine and must be called before <c>OnLogic</c> is called.
+        /// Initializes the state machine and must be called before <c>OnLogic</c> is called.
         /// It sets the activeState to the selected startState.
         /// </summary>
         public override void OnEnter()
@@ -525,7 +534,7 @@ namespace UnityHFSM
         }
 
         /// <summary>
-        /// Initialises a transition, i.e. sets its <c>fsm</c> attribute, and then calls its <c>Init</c> method.
+        /// Initializes a transition, i.e. sets its <c>fsm</c> attribute, and then calls its <c>Init</c> method.
         /// </summary>
         /// <param name="transition"></param>
         private void InitTransition(TransitionBase<TStateId> transition)
@@ -771,18 +780,29 @@ namespace UnityHFSM
             (activeState as IActionable<TEvent>)?.OnAction(trigger);
         }
 
-        /// <summary>
-        /// Runs an action on the currently active state and lets you pass one data parameter.
-        /// </summary>
-        /// <param name="trigger">Name of the action.</param>
-        /// <param name="data">Any custom data for the parameter.</param>
-        /// <typeparam name="TData">Type of the data parameter.
-        /// 	Should match the data type of the action that was added via <c>AddAction&lt;T&gt;(...).</c></typeparam>
+		/// <summary>
+		/// Runs an action on the currently active state and lets you pass one data parameter.
+		/// </summary>
+		/// <param name="trigger">Name of the action.</param>
+		/// <param name="data">Any custom data for the parameter.</param>
+		/// <typeparam name="TData">Type of the data parameter.
+		/// 	Should match the data type of the action that was added via <c>AddAction&lt;T&gt;(...)</c>.</typeparam>
+		/// <inheritdoc />
         public virtual void OnAction<TData>(TEvent trigger, TData data)
         {
             EnsureIsInitializedFor("Running OnAction of the active state");
             (activeState as IActionable<TEvent>)?.OnAction<TData>(trigger, data);
         }
+
+		/// <summary>
+        /// Checks if currently active state has the specified action.
+        /// </summary>
+        /// <param name="trigger">Name of the action.</param>
+        public virtual bool HasAction(TEvent trigger)
+		{
+			EnsureIsInitializedFor("Running HasAction of the active state");
+			return (activeState as IActionable<TEvent>)?.HasAction(trigger) ?? false;
+		}
 
         public StateBase<TStateId> GetState(TStateId name)
         {
