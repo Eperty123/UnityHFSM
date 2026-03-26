@@ -1,6 +1,43 @@
 # Changelog
 
+## 2.3
+
+### Added
+
+- **New `HasAction(name)` method**: Added the ability to query whether the active state hierarchy (including nested states) has a handler for a specific action. This is ideal for implementing "fallback" logic when a command is ignored by the current state.
+
+    Example:
+    ```csharp
+    if (fsm.HasAction("Shoot")) {
+        fsm.OnAction("Shoot");
+    }
+    else {
+        // Feedback for the player when the current state (e.g. "Reloading") 
+        // doesn't support shooting.
+        audioSource.PlayOneShot(clickSound); 
+    }
+    ```
+
+- **`fsm.IsInitialized` property**: A new boolean flag to safely verify if a state machine has been started and is ready to process logic.
+
+- **Dynamic state / transition configuration**: Key fields including `needsExitTime`, `forceInstantly`, `isGhostState`, and `isExitTransition` can now be modified at runtime. This allows states and transitions to adapt their behavior dynamically during execution, providing significantly more flexibility for complex logic.
+
+### Improved
+
+- Slightly reduced the overhead of most methods of the `StateMachine` class.
+
+### Fixed
+
+- A crash occurring in some Unity 6 versions during package import (issue #68).
+
 ---
+
+## 2.2.1
+
+### Fixed
+
+- Fixed a memory leak in the Animator Graph visualisation tool (#70).
+- Fixed a synchronization issue between the Animator Graph tool and Unity, triggering errors from the Unity editor (#66).
 
 ## 2.2
 

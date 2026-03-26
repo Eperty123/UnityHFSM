@@ -12,7 +12,7 @@ namespace UnityHFSM
 		private ActionStorage<TEvent> actionStorage;
 
 		/// <summary>
-		/// Initialises a new instance of the ActionState class.
+		/// Initializes a new instance of the ActionState class.
 		/// </summary>
 		/// <inheritdoc cref="StateBase{T}(bool, bool)"/>
 		public ActionState(bool needsExitTime, bool isGhostState = false)
@@ -67,6 +67,14 @@ namespace UnityHFSM
 		/// <typeparam name="TData">Type of the data parameter.</typeparam>
 		public void OnAction<TData>(TEvent trigger, TData data)
 			=> actionStorage?.RunAction<TData>(trigger, data);
+
+        /// <summary>
+        /// Checks if this action is defined / has been added.
+        /// </summary>
+        /// <param name="trigger">Name of the action.</param>
+        /// <returns></returns>
+        public bool HasAction(TEvent trigger)
+			=> actionStorage?.HasAction(trigger) ?? false;
 	}
 
 	/// <inheritdoc />
